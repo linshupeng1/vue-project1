@@ -1,6 +1,7 @@
 <template>
 	<div>
 		{{hello}}
+		<button @click='emitEvent'>emit</button>
 	</div>
 </template>
 
@@ -9,6 +10,11 @@
 		data() {
 			return {
 				hello: 'i am component a '
+			}
+		},
+		methods: {
+			emitEvent(){
+				this.$emit('my-event',this.hello);
 			}
 		}
 	}

@@ -6,10 +6,11 @@
     {{ num + 1 }}
     {{ status ? 'success' : 'fail' }}
     <ul>
-      <li v-for="(item,index) in list" :class="{odd:index%2}">
+      <li v-for="(item,index) in myList" :class="{odd:index%2}">
         {{ item.name }} - {{ item.price }} - {{ index }}
       </li>
     </ul>
+    <button @click='changeList'>change</button>
     <ul>
       <li v-for="(value,key) in objList">
         {{ key }} - {{ value }}
@@ -21,9 +22,32 @@
     <a v-show="!isPartA">partB</a>
     <button v-on:click ='addItem'>addItem</button>
     <button v-on:click ='toggle'>toggle</button>
+    <input type="text" @keydown.13="onKeydown">
+    <input type="text" v-model.lazy='myVal'>
+    {{ myValueCompute }}
+    <input type="checkbox" value="banana" v-model='checkboxVal'>
+    <label for="">banana</label>
+    <input type="checkbox" value="apple" v-model='checkboxVal'>
+    <label for="">apple</label>
+    <input type="checkbox" value="orange" v-model='checkboxVal'>
+    <label for="">orange</label>
+    {{checkboxVal}}
+    <input type="radio" value="banana" v-model='radioVal'>
+    <label for="">banana</label>
+    <input type="radio" value="apple" v-model='radioVal'>
+    <label for="">apple</label>
+    <input type="radio" value="orange" v-model='radioVal'>
+    <label for="">orange</label>
+    {{radioVal}}
+    <select name="" id="" v-model="selectVal">
+      <option v-for="item in options" :value="item.val">{{item.name}}</option>
+<!--       <option value="1">banana</option>
+      <option value="2">orange</option> -->
+    </select>
+    {{selectVal}}
     <!-- 父组件给子组件传值 -->
-    <componentA v-for='(value,key) in objList' :key="key" :value="value"></componentA>
-      
+<!--     <componentA v-for='(value,key) in objList' :key="key" :value="value"></componentA> -->
+  <componentA @my-event='onComaMyEvent'></componentA>
   </div>
 </template>
 
@@ -33,12 +57,37 @@
   export default {
     // 组件注册
     components: {
+      // componentA  es6
       componentA: componentA
     },
     data () {
       return {
         hello: '<span><img src="" alt="" />world</span>',
         num: 1,
+        myVal: '',
+        checkboxVal: [],
+        radioVal: '',
+        selectVal: '',
+        myList: [
+          {
+            name: 'apple',
+            price: 22
+          },
+          {
+            name: 'banana',
+            price: 13
+          }
+        ],
+        options: [
+          {
+            name: 'apple',
+            val: 0
+          },
+          {
+            name: 'orange',
+            val: 1
+          }
+        ],
         font: 'font-red',
         className: {
           'red': true,
@@ -72,6 +121,11 @@
         }
       }
     },
+    computed: {
+      myValueCompute() {
+        return Date.now();
+      }
+    },
     methods: {
         addItem(){
           console.log(this.list);
@@ -86,7 +140,37 @@
         },
         toggle(){
           this.isPartA = !this.isPartA;
+        },
+        onKeydown(){
+          console.log('on key down');
+        },
+        onComaMyEvent(parm){
+          console.log('onComaMyEvent '+parm);
+        },
+        getMyValueCompute() {
+          return Date.now();
+        },
+        changeList(){
+          Vue.set(this.myList,1,{
+            name: 'pinaapple',
+            price: 256
+          });
+          // this.tellUser();
+        },
+        removeItem(){
+          // this.tellUser();
+        },
+        tellUser() {
+          alert('list change');
         }
+    },
+    watch: {
+      myVal: function(val,oldVal){
+        console.log(val,' ',oldVal);
+      },
+      myList: function(){
+        this.tellUser();
+      }
     }
   }
 </script>
