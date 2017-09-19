@@ -41,13 +41,17 @@
     {{radioVal}}
     <select name="" id="" v-model="selectVal">
       <option v-for="item in options" :value="item.val">{{item.name}}</option>
-<!--       <option value="1">banana</option>
+      <!--       <option value="1">banana</option>
       <option value="2">orange</option> -->
     </select>
     {{selectVal}}
     <!-- 父组件给子组件传值 -->
-<!--     <componentA v-for='(value,key) in objList' :key="key" :value="value"></componentA> -->
-  <componentA @my-event='onComaMyEvent'></componentA>
+    <!-- <component-a v-for='(value,key) in objList' :key="key" :value="value"></component-a> -->
+    <!-- 自定义事件 -->
+    <component-a @my-event='onComaMyEvent'></component-a>
+    <p :is="comToRender" number-to-do='88'></p>
+    <input type="text" v-model="myVal">
+    <component-a :my-value="myVal"></component-a>
   </div>
 </template>
 
@@ -62,6 +66,7 @@
     },
     data () {
       return {
+        comToRender: 'component-a',
         hello: '<span><img src="" alt="" />world</span>',
         num: 1,
         myVal: '',
